@@ -54,53 +54,66 @@ Shader "Unlit/WebcamShader"
                 return o;
             }
 
-            fixed4 frag (v2f i) : SV_Target
+            float4 daltonize(fixed4 input, int mode) {
+                // RGB to LMS matrix conversion
+                float3 L = (17.8824f * input.r) + (43.5161f * input.g) + (4.11935f * input.b);
+                float3 M = (3.45565f * input.r) + (27.1554f * input.g) + (3.86714f * input.b);
+                float3 S = (0.0299566f * input.r) + (0.184309f * input.g) + (1.46709f * input.b);
+                
+                // Simulate color blindness
+                
+                float l, m, s;
+                if ( mode == 1) {
+                    // Protanope - reds are greatly reduced (1% men)
+                    l = 0.0f * L + 2.02344f * M + -2.52581f * S;
+                    m = 0.0f * L + 1.0f * M + 0.0f * S;
+                    s = 0.0f * L + 0.0f * M + 1.0f * S;
+                } else if (mode == 2) {
+                    // Deuteranope - greens are greatly reduced (1% men)
+                    l = 1.0f * L + 0.0f * M + 0.0f * S;
+                    m = 0.494207f * L + 0.0f * M + 1.24827f * S;
+                    s = 0.0f * L + 0.0f * M + 1.0f * S;
+                } else if (mode == 3) {
+                    // Tritanope - blues are greatly reduced (0.003% population)
+                    l = 1.0f * L + 0.0f * M + 0.0f * S;
+                    m = 0.0f * L + 1.0f * M + 0.0f * S;
+                    s = -0.395913f * L + 0.801109f * M + 0.0f * S;
+                }
+                                
+                // LMS to RGB matrix conversion
+                float4 error;
+                error.r = (0.0809444479f * l) + (-0.130504409f * m) + (0.116721066f * s);
+                error.g = (-0.0102485335f * l) + (0.0540193266f * m) + (-0.113614708f * s);
+                error.b = (-0.000365296938f * l) + (-0.00412161469f * m) + (0.693511405f * s);
+                error.a = 1;
+
+                // return error.rgba;
+                
+                // Isolate invisible colors to color vision deficiency (calculate error matrix)
+                error = (input - error);
+                
+                // Shift colors towards visible spectrum (apply error modifications)
+                float4 correction;
+                correction.r = 0; // (error.r * 0.0) + (error.g * 0.0) + (error.b * 0.0);
+                correction.g = (error.r * 0.7) + (error.g * 1.0); // + (error.b * 0.0);
+                correction.b = (error.r * 0.7) + (error.b * 1.0); // + (error.g * 0.0);
+                
+                // Add compensation to original values
+                correction = input + correction;
+                correction.a = input.a;
+                
+                return correction.rgba;
+            }
+
+            float4 frag (v2f i) : SV_Target
             {
                 // sample the texture
-                fixed4 zoom_col = tex2D(_MainTex, i.uv * float2(1.0 - _Zoom, 1.0 - _Zoom) + _Offset + _Zoom * float2(0.5, 0.5));
-                fixed4 col = tex2D(_MainTex, i.uv);
+                float4 zoom_col = tex2D(_MainTex, i.uv * float2(1.0 - _Zoom, 1.0 - _Zoom) + _Offset + _Zoom * float2(0.5, 0.5));
+                float4 col = tex2D(_MainTex, i.uv);
 
-                float L = (17.8824 * col.r) + (43.5161 * col.g) + (4.11935 * col.b);
-                float M = (3.45565 * col.r) + (27.1554 * col.g) + (3.86714 * col.b);
-                float S = (0.0299566 * col.r) + (0.184309 * col.g) + (1.46709 * col.b);
+                float4 corr = daltonize(col, _Mode);
 
-                float l, m, s;
-                if (_Mode == 1) //Protanopia
-                {
-                    l = 0.0 * L + 2.02344 * M + -2.52581 * S;
-                    m = 0.0 * L + 1.0 * M + 0.0 * S;
-                    s = 0.0 * L + 0.0 * M + 1.0 * S;
-                }
-                
-                if (_Mode == 2) //Deuteranopia
-                {
-                    l = 1.0 * L + 0.0 * M + 0.0 * S;
-                    m = 0.494207 * L + 0.0 * M + 1.24827 * S;
-                    s = 0.0 * L + 0.0 * M + 1.0 * S;
-                }
-                
-                if (_Mode == 3) //Tritanopia
-                {
-                    l = 1.0 * L + 0.0 * M + 0.0 * S;
-                    m = 0.0 * L + 1.0 * M + 0.0 * S;
-                    s = -0.395913 * L + 0.801109 * M + 0.0 * S;
-                }
-
-                fixed4 error;
-                error.r = (0.0809444479 * l) + (-0.130504409 * m) + (0.116721066 * s);
-                error.g = (-0.0102485335 * l) + (0.0540193266 * m) + (-0.113614708 * s);
-                error.b = (-0.000365296938 * l) + (-0.00412161469 * m) + (0.693511405 * s);
-                error.a = 1.0;
-
-                fixed4 diff = col - error;
-                fixed4 correction;
-                correction.r = 0.0;
-                correction.g =  (diff.r * 0.7) + (diff.g * 1.0);
-                correction.b =  (diff.r * 0.7) + (diff.b * 1.0);
-                correction = col + correction * _Zoom;
-                correction.a = col.a;
-
-                return _Mode == 0 ? zoom_col : correction;
+                return _Mode == 0 ? zoom_col : corr;
             }
             ENDCG
         }
