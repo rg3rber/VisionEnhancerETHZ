@@ -67,7 +67,7 @@ public class ImageSender : MonoBehaviour
     [SerializeField] private LoadingScreenManager loadingScreenManager;
     [SerializeField] private string serverUrl = "http://localhost:5000/process_image";
     private float processingStartTime;
-    private readonly string OPENAI_API_KEY = ""
+    private readonly string OPENAI_API_KEY = "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";
     private readonly string OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
 
     private void Start()
@@ -170,12 +170,26 @@ public class ImageSender : MonoBehaviour
     private async Task<string> ProcessWithChatGPT(string text)
     {
         string prompt = @"Process this text for speech output:
-1. Remove any mathematical formulas, equations, or symbols
-2. Remove technical jargon and complex terminology
-3. Convert numbers into words where appropriate
-4. Remove URLs, email addresses, and references
-5. Make the text more conversational and easier to understand
-6. Keep only the essential meaning of the text
+1. Analyze the input text, do not say 'Analyzing the input text' or anything of the sort
+2. If the text contains more than 2 mathematical symbols, equations, or variables, respond with ONLY: 'This appears to be a mathematical formula'
+3. Otherwise, remove ALL mathematical content including:
+   - Variables (single letters, Greek letters)
+   - Numbers with subscripts or superscripts
+   - Mathematical operators (+, -, ×, ÷, =, etc.)
+   - Any sequences that look like formulas
+4. Keep only plain English descriptive text
+5. Do not preserve any part of equations or formulas
+6. Remove:
+- URLs and email addresses
+   - References and citations (e.g., '[1]', 'et al.', 'Figure 3.2')
+   - Emails
+   - Dates
+   - Code snippets or programming syntax
+   - Table data and numerical lists
+   - Slide numbers or page numbers
+   - Lengthy parenthetical asides
+   - File paths or technical specifications
+7. If the text contains more than 3 instances of the content in point 6, respond with ONLY: 'This content contains technical information not suitable for speech output'
 
 Input text: " + text;
 
