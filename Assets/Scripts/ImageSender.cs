@@ -7,6 +7,7 @@ public class ImageSender : MonoBehaviour
     [SerializeField] private TextToSpeechManager ttsManager;
     [SerializeField] private LoadingScreenManager loadingScreenManager;
     [SerializeField] private string serverUrl = "http://localhost:5000/process_image";
+    private float processingStartTime;
 
     private void Start()
     {
@@ -22,6 +23,7 @@ public class ImageSender : MonoBehaviour
 
     public IEnumerator SendImageToServer(Texture2D texture)
     {
+        processingStartTime = Time.time;
         if (texture == null)
         {
             Debug.LogError("Texture is null in SendImageToServer");
@@ -74,6 +76,7 @@ public class ImageSender : MonoBehaviour
 
     private void ProcessServerResponse(string response)
     {
+        float processingTime = Time.time - processingStartTime;
         try
         {
             var jsonResponse = JsonUtility.FromJson<ServerResponse>(response);
@@ -86,7 +89,7 @@ public class ImageSender : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log($"Detected text: {detectedText}");
+                    Debug.Log($"Detected text (processed in {processingTime:F2} seconds): {detectedText}");
                     ttsManager.SpeakText(detectedText);
                 }
             }
