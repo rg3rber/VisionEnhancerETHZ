@@ -5,21 +5,6 @@ using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 
 [System.Serializable]
-public class OpenAIRequest
-{
-    public string model;
-    public OpenAIMessage[] messages;
-    public float temperature;
-}
-
-[System.Serializable]
-public class OpenAIMessage
-{
-    public string role;
-    public string content;
-}
-
-[System.Serializable]
 public class ImageRequestData
 {
     public string image;
@@ -31,24 +16,6 @@ public class ServerResponse
     public bool success;
     public string detected_text;
     public string error;
-}
-
-[System.Serializable]
-public class GPTResponse
-{
-    public Choice[] choices;
-}
-
-[System.Serializable]
-public class Choice
-{
-    public Message message;
-}
-
-[System.Serializable]
-public class Message
-{
-    public string content;
 }
 
 public static class UnityWebRequestExtensions
@@ -67,8 +34,6 @@ public class ImageSender : MonoBehaviour
     [SerializeField] private LoadingScreenManager loadingScreenManager;
     [SerializeField] private string serverUrl = "http://localhost:5000/process_image";
     private float processingStartTime;
-    private readonly string OPENAI_API_KEY = "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";
-    private readonly string OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
 
     private void Start()
     {
@@ -140,14 +105,13 @@ public class ImageSender : MonoBehaviour
             var jsonResponse = JsonUtility.FromJson<ServerResponse>(response);
             if (jsonResponse.success)
             {
-                string detectedText = jsonResponse.detected_text;
-                if (string.IsNullOrEmpty(detectedText))
+                string processedText = jsonResponse.detected_text;
+                if (string.IsNullOrEmpty(processedText))
                 {
                     ttsManager?.SpeakText("No text was detected in the image");
                 }
                 else
                 {
-                    string processedText = await ProcessWithChatGPT(detectedText);
                     Debug.Log($"Processed text ({processingTime:F2} seconds): {processedText}");
                     ttsManager?.SpeakText(processedText);
                 }
@@ -164,66 +128,6 @@ public class ImageSender : MonoBehaviour
             string errorMessage = $"Error processing response: {e.Message}";
             Debug.LogError(errorMessage);
             ttsManager?.SpeakText(errorMessage);
-        }
-    }
-
-    private async Task<string> ProcessWithChatGPT(string text)
-    {
-        string prompt = @"Process this text for speech output:
-1. Analyze the input text, do not say 'Analyzing the input text' or anything of the sort
-2. If the text contains more than 2 mathematical symbols, equations, or variables, respond with ONLY: 'This appears to be a mathematical formula'
-3. Otherwise, remove ALL mathematical content including:
-   - Variables (single letters, Greek letters)
-   - Numbers with subscripts or superscripts
-   - Mathematical operators (+, -, ×, ÷, =, etc.)
-   - Any sequences that look like formulas
-4. Keep only plain English descriptive text
-5. Do not preserve any part of equations or formulas
-6. Remove:
-- URLs and email addresses
-   - References and citations (e.g., '[1]', 'et al.', 'Figure 3.2')
-   - Emails
-   - Dates
-   - Code snippets or programming syntax
-   - Table data and numerical lists
-   - Slide numbers or page numbers
-   - Lengthy parenthetical asides
-   - File paths or technical specifications
-7. If the text contains more than 3 instances of the content in point 6, respond with ONLY: 'This content contains technical information not suitable for speech output'
-
-Input text: " + text;
-
-        using (UnityWebRequest request = new UnityWebRequest(OPENAI_API_URL, "POST"))
-        {
-            var requestData = new OpenAIRequest
-            {
-                model = "gpt-3.5-turbo",
-                messages = new OpenAIMessage[]
-                {
-                    new OpenAIMessage { role = "system", content = "You are a helpful assistant that makes text more suitable for speech output." },
-                    new OpenAIMessage { role = "user", content = prompt }
-                },
-                temperature = 0.7f
-            };
-
-            string jsonData = JsonUtility.ToJson(requestData);
-            byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
-            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-            request.downloadHandler = new DownloadHandlerBuffer();
-            request.SetRequestHeader("Content-Type", "application/json");
-            request.SetRequestHeader("Authorization", $"Bearer {OPENAI_API_KEY}");
-
-            var operation = request.SendWebRequest();
-            await operation;
-
-            if (request.result != UnityWebRequest.Result.Success)
-            {
-                Debug.LogError($"GPT API Error: {request.error}");
-                return text;
-            }
-
-            var gptResponse = JsonUtility.FromJson<GPTResponse>(request.downloadHandler.text);
-            return gptResponse.choices[0].message.content;
         }
     }
 }
