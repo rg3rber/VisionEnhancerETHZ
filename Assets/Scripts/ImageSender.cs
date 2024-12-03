@@ -67,7 +67,7 @@ public class ImageSender : MonoBehaviour
     [SerializeField] private LoadingScreenManager loadingScreenManager;
     [SerializeField] private string serverUrl = "http://localhost:5000/process_image";
     private float processingStartTime;
-    private readonly string OPENAI_API_KEY = "";
+    private readonly string OPENAI_API_KEY = "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";
     private readonly string OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
 
     private void Start()
@@ -178,6 +178,16 @@ public class ImageSender : MonoBehaviour
    - Any sequences that look like formulas
 4. Keep only plain English descriptive text
 5. Do not preserve any part of equations or formulas
+
+6. Remove:
+- URLs and email addresses
+   - References and citations (e.g., '[1]', 'et al.', 'Figure 3.2')
+   - Code snippets or programming syntax
+   - Table data and numerical lists
+   - Slide numbers or page numbers
+   - Lengthy parenthetical asides
+   - File paths or technical specifications
+7. If the text contains more than 3 instances of the content in point 6, respond with ONLY: 'This content contains technical information not suitable for speech output'
 
 Input text: " + text;
 
