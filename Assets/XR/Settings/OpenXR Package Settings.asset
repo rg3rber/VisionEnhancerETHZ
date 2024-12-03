@@ -100,6 +100,27 @@ MonoBehaviour:
   company: Unity
   priority: 0
   required: 0
+--- !u!114 &-8097469378155198203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5a1f07dc5afe854f9f12a4194aca3fb, type: 3}
+  m_Name: WebGL
+  m_EditorClassIdentifier: 
+  features:
+  - {fileID: -124061899968614048}
+  m_renderMode: 1
+  m_autoColorSubmissionMode: 1
+  m_colorSubmissionModes:
+    m_List: 00000000
+  m_depthSubmissionMode: 0
+  m_optimizeBufferDiscards: 0
+  m_symmetricProjection: 0
 --- !u!114 &-8045578785383137265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200,8 +221,6 @@ MonoBehaviour:
   - {fileID: -720415363099249330}
   - {fileID: -6992732449470956051}
   - {fileID: 8672190085145705853}
-  - {fileID: 6447786454167160525}
-  - {fileID: -3293908511307733478}
   - {fileID: -8045578785383137265}
   - {fileID: -2809596162077455985}
   - {fileID: -8776898711967331898}
@@ -209,15 +228,11 @@ MonoBehaviour:
   - {fileID: -5767046426268763270}
   - {fileID: -4558032087652847750}
   - {fileID: 8690206564768862746}
-  - {fileID: -1117627971884188906}
-  - {fileID: -7850694440024505223}
   - {fileID: 9187820811581691003}
   - {fileID: 8582212635310192690}
   - {fileID: -7813007198975057759}
   - {fileID: -5405236665303149245}
   - {fileID: 7696881093085155602}
-  - {fileID: 8589558283954133480}
-  - {fileID: 7740465735628479319}
   m_renderMode: 1
   m_autoColorSubmissionMode: 1
   m_colorSubmissionModes:
@@ -900,6 +915,26 @@ MonoBehaviour:
   required: 0
   cacheSize: 1048576
   perThreadCacheSize: 51200
+--- !u!114 &-124061899968614048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b213d3e3c7f3109449eb46a4c8ee42f0, type: 3}
+  m_Name: XrPerformanceSettingsFeature WebGL
+  m_EditorClassIdentifier: 
+  m_enabled: 0
+  nameUi: XR Performance Settings
+  version: 1.0.0
+  featureIdInternal: com.unity.openxr.feature.extension.performance_settings
+  openxrExtensionStrings: XR_EXT_performance_settings
+  company: Unity
+  priority: 0
+  required: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -912,11 +947,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f0ebc320a151d3408ea1e9fce54d40e, type: 3}
   m_Name: OpenXR Package Settings
   m_EditorClassIdentifier: 
-  Keys: 01000000070000000e000000
+  Keys: 01000000070000000e0000000d000000
   Values:
   - {fileID: 496901679720431769}
   - {fileID: 5606019393062554822}
   - {fileID: -7246557817474875313}
+  - {fileID: -8097469378155198203}
 --- !u!114 &496901679720431769
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -935,27 +971,19 @@ MonoBehaviour:
   - {fileID: -559591161472434471}
   - {fileID: -1001789645475496017}
   - {fileID: -4336261036567337401}
-  - {fileID: 8893359664709600921}
-  - {fileID: 3689709148122953307}
   - {fileID: 6315736844771761150}
   - {fileID: 732648049944466677}
   - {fileID: 4036333755266959288}
-  - {fileID: -3479027895762391957}
   - {fileID: 6712439269741062001}
   - {fileID: -8655073052929506994}
   - {fileID: -7142234479121804598}
   - {fileID: 1358495191266633208}
-  - {fileID: -6844570060418801371}
   - {fileID: 5464680717012701854}
-  - {fileID: 4821159536062516586}
   - {fileID: -7166457577470358692}
   - {fileID: -8173036908538654789}
   - {fileID: -216149449067352507}
   - {fileID: -434536232779664153}
   - {fileID: 1499348055040639108}
-  - {fileID: -4803219936007674421}
-  - {fileID: -6529115355734679106}
-  - {fileID: -7592057267763556657}
   m_renderMode: 1
   m_autoColorSubmissionMode: 1
   m_colorSubmissionModes:
@@ -1280,6 +1308,9 @@ MonoBehaviour:
   - visibleName: Quest 3
     manifestName: eureka
     enabled: 1
+  - visibleName: Quest 3S
+    manifestName: quest3s
+    enabled: 1
   forceRemoveInternetPermission: 0
   symmetricProjection: 0
   foveatedRenderingApi: 0
@@ -1305,21 +1336,17 @@ MonoBehaviour:
   - {fileID: 3632258690798938435}
   - {fileID: 4649899176586732023}
   - {fileID: -6181280239532851779}
-  - {fileID: -987879790337415125}
   - {fileID: -5344719755288872841}
-  - {fileID: 1806149362589195243}
   - {fileID: 5477944952159831611}
   - {fileID: 2193952440240061667}
   - {fileID: 5910715683897798749}
   - {fileID: -6107863316781472892}
   - {fileID: 2574150965941985451}
-  - {fileID: -2088104403399895001}
   - {fileID: -3991682638656000392}
   - {fileID: -8295501986864496515}
   - {fileID: -1165950664386311546}
   - {fileID: 2106826652726599263}
   - {fileID: 4535718907764908785}
-  - {fileID: -8757602627136061831}
   m_renderMode: 1
   m_autoColorSubmissionMode: 1
   m_colorSubmissionModes:

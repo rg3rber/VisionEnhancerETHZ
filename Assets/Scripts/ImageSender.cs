@@ -40,8 +40,7 @@ public class ImageSender : MonoBehaviour
 
         byte[] imageBytes = texture.EncodeToPNG();
         string base64Image = System.Convert.ToBase64String(imageBytes);
-
-        string jsonData = JsonUtility.ToJson(new ImageData { image = base64Image });
+        string jsonData = JsonUtility.ToJson(new ImageRequestData { image = base64Image });
 
         using (UnityWebRequest request = new UnityWebRequest(serverUrl, "POST"))
         {
@@ -53,7 +52,10 @@ public class ImageSender : MonoBehaviour
             Debug.Log("Sending image to server...");
             yield return request.SendWebRequest();
 
-            loadingScreenManager.HideLoadingScreen();
+            if (loadingScreenManager != null)
+            {
+                loadingScreenManager.HideLoadingScreen();
+            }
 
             if (request.result == UnityWebRequest.Result.Success)
             {
@@ -105,7 +107,7 @@ public class ImageSender : MonoBehaviour
 }
 
 [System.Serializable]
-public class ImageData
+public class ImageRequestData
 {
     public string image;
 }
