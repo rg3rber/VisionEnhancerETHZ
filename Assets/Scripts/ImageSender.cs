@@ -67,7 +67,7 @@ public class ImageSender : MonoBehaviour
     [SerializeField] private LoadingScreenManager loadingScreenManager;
     [SerializeField] private string serverUrl = "http://localhost:5000/process_image";
     private float processingStartTime;
-    private readonly string OPENAI_API_KEY = "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";
+    private readonly string OPENAI_API_KEY = ""
     private readonly string OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
 
     private void Start()
@@ -96,10 +96,7 @@ public class ImageSender : MonoBehaviour
             loadingScreenManager.ShowLoadingScreen();
         }
 
-        if (ttsManager != null)
-        {
-            ttsManager.SpeakText("Processing image");
-        }
+        ttsManager?.SpeakText("Processing image");
 
         byte[] imageBytes = texture.EncodeToPNG();
         string base64Image = System.Convert.ToBase64String(imageBytes);
@@ -130,7 +127,7 @@ public class ImageSender : MonoBehaviour
             {
                 string errorMessage = $"Error sending image: {request.error}";
                 Debug.LogError(errorMessage);
-                ttsManager.SpeakText(errorMessage);
+                ttsManager?.SpeakText(errorMessage);
             }
         }
     }
@@ -146,48 +143,39 @@ public class ImageSender : MonoBehaviour
                 string detectedText = jsonResponse.detected_text;
                 if (string.IsNullOrEmpty(detectedText))
                 {
-                    ttsManager.SpeakText("No text was detected in the image");
+                    ttsManager?.SpeakText("No text was detected in the image");
                 }
                 else
                 {
-                    string processedText = await FilterMathematicalContent(detectedText);
-                    Debug.Log("Text processed by ChatGPT");
-                    Debug.Log($"Detected text (processed in {processingTime:F2} seconds): {processedText}");
-                    ttsManager.SpeakText(processedText);
+                    string processedText = await ProcessWithChatGPT(detectedText);
+                    Debug.Log($"Processed text ({processingTime:F2} seconds): {processedText}");
+                    ttsManager?.SpeakText(processedText);
                 }
+            }
+            else
+            {
+                string errorMessage = $"Server error: {jsonResponse.error}";
+                Debug.LogError(errorMessage);
+                ttsManager?.SpeakText(errorMessage);
             }
         }
         catch (System.Exception e)
         {
             string errorMessage = $"Error processing response: {e.Message}";
             Debug.LogError(errorMessage);
-            ttsManager.SpeakText(errorMessage);
+            ttsManager?.SpeakText(errorMessage);
         }
     }
 
-    private async Task<string> FilterMathematicalContent(string text)
+    private async Task<string> ProcessWithChatGPT(string text)
     {
-        Debug.Log("Original text before GPT processing: " + text);
-        string prompt = @"You are a text processor. Your task is to:
-1. Analyze the input text
-2. If the text contains more than 2 mathematical symbols, equations, or variables, respond with ONLY: 'This appears to be a mathematical formula'
-3. Otherwise, remove ALL mathematical content including:
-   - Variables (single letters, Greek letters)
-   - Numbers with subscripts or superscripts
-   - Mathematical operators (+, -, ×, ÷, =, etc.)
-   - Any sequences that look like formulas
-4. Keep only plain English descriptive text
-5. Do not preserve any part of equations or formulas
-
-6. Remove:
-- URLs and email addresses
-   - References and citations (e.g., '[1]', 'et al.', 'Figure 3.2')
-   - Code snippets or programming syntax
-   - Table data and numerical lists
-   - Slide numbers or page numbers
-   - Lengthy parenthetical asides
-   - File paths or technical specifications
-7. If the text contains more than 3 instances of the content in point 6, respond with ONLY: 'This content contains technical information not suitable for speech output'
+        string prompt = @"Process this text for speech output:
+1. Remove any mathematical formulas, equations, or symbols
+2. Remove technical jargon and complex terminology
+3. Convert numbers into words where appropriate
+4. Remove URLs, email addresses, and references
+5. Make the text more conversational and easier to understand
+6. Keep only the essential meaning of the text
 
 Input text: " + text;
 
@@ -198,14 +186,13 @@ Input text: " + text;
                 model = "gpt-3.5-turbo",
                 messages = new OpenAIMessage[]
                 {
-                    new OpenAIMessage { role = "system", content = "You are a specialized assistant that identifies mathematical content. If you see more than 2 mathematical elements, respond with 'This appears to be a mathematical formula'. Otherwise, remove ALL mathematical content completely." },
+                    new OpenAIMessage { role = "system", content = "You are a helpful assistant that makes text more suitable for speech output." },
                     new OpenAIMessage { role = "user", content = prompt }
                 },
-                temperature = 0.3f
+                temperature = 0.7f
             };
 
             string jsonData = JsonUtility.ToJson(requestData);
-            Debug.Log("Sending to GPT: " + jsonData);
             byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
             request.uploadHandler = new UploadHandlerRaw(bodyRaw);
             request.downloadHandler = new DownloadHandlerBuffer();
