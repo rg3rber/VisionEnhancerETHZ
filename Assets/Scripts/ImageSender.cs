@@ -1,6 +1,65 @@
 using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+
+[System.Serializable]
+public class OpenAIRequest
+{
+    public string model;
+    public OpenAIMessage[] messages;
+    public float temperature;
+}
+
+[System.Serializable]
+public class OpenAIMessage
+{
+    public string role;
+    public string content;
+}
+
+[System.Serializable]
+public class ImageRequestData
+{
+    public string image;
+}
+
+[System.Serializable]
+public class ServerResponse
+{
+    public bool success;
+    public string detected_text;
+    public string error;
+}
+
+[System.Serializable]
+public class GPTResponse
+{
+    public Choice[] choices;
+}
+
+[System.Serializable]
+public class Choice
+{
+    public Message message;
+}
+
+[System.Serializable]
+public class Message
+{
+    public string content;
+}
+
+public static class UnityWebRequestExtensions
+{
+    public static TaskAwaiter<UnityWebRequest.Result> GetAwaiter(this UnityWebRequestAsyncOperation operation)
+    {
+        var tcs = new TaskCompletionSource<UnityWebRequest.Result>();
+        operation.completed += asyncOp => tcs.SetResult(((UnityWebRequestAsyncOperation)asyncOp).webRequest.result);
+        return tcs.Task.GetAwaiter();
+    }
+}
 
 public class ImageSender : MonoBehaviour
 {
@@ -8,6 +67,8 @@ public class ImageSender : MonoBehaviour
     [SerializeField] private LoadingScreenManager loadingScreenManager;
     [SerializeField] private string serverUrl = "http://localhost:5000/process_image";
     private float processingStartTime;
+    private readonly string OPENAI_API_KEY = "";
+    private readonly string OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
 
     private void Start()
     {
@@ -74,7 +135,7 @@ public class ImageSender : MonoBehaviour
         }
     }
 
-    private void ProcessServerResponse(string response)
+    private async void ProcessServerResponse(string response)
     {
         float processingTime = Time.time - processingStartTime;
         try
@@ -89,36 +150,69 @@ public class ImageSender : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log($"Detected text (processed in {processingTime:F2} seconds): {detectedText}");
-                    ttsManager.SpeakText(detectedText);
+                    string processedText = await FilterMathematicalContent(detectedText);
+                    Debug.Log("Text processed by ChatGPT");
+                    Debug.Log($"Detected text (processed in {processingTime:F2} seconds): {processedText}");
+                    ttsManager.SpeakText(processedText);
                 }
-            }
-            else
-            {
-                string errorMessage = $"Server error: {jsonResponse.error}";
-                Debug.LogError(errorMessage);
-                ttsManager.SpeakText(errorMessage);
             }
         }
         catch (System.Exception e)
         {
-            string errorMessage = $"Error processing server response: {e.Message}";
+            string errorMessage = $"Error processing response: {e.Message}";
             Debug.LogError(errorMessage);
             ttsManager.SpeakText(errorMessage);
         }
     }
-}
 
-[System.Serializable]
-public class ImageRequestData
-{
-    public string image;
-}
+    private async Task<string> FilterMathematicalContent(string text)
+    {
+        Debug.Log("Original text before GPT processing: " + text);
+        string prompt = @"You are a text processor. Your task is to:
+1. Analyze the input text
+2. If the text contains more than 2 mathematical symbols, equations, or variables, respond with ONLY: 'This appears to be a mathematical formula'
+3. Otherwise, remove ALL mathematical content including:
+   - Variables (single letters, Greek letters)
+   - Numbers with subscripts or superscripts
+   - Mathematical operators (+, -, ×, ÷, =, etc.)
+   - Any sequences that look like formulas
+4. Keep only plain English descriptive text
+5. Do not preserve any part of equations or formulas
 
-[System.Serializable]
-public class ServerResponse
-{
-    public bool success;
-    public string detected_text;
-    public string error;
+Input text: " + text;
+
+        using (UnityWebRequest request = new UnityWebRequest(OPENAI_API_URL, "POST"))
+        {
+            var requestData = new OpenAIRequest
+            {
+                model = "gpt-3.5-turbo",
+                messages = new OpenAIMessage[]
+                {
+                    new OpenAIMessage { role = "system", content = "You are a specialized assistant that identifies mathematical content. If you see more than 2 mathematical elements, respond with 'This appears to be a mathematical formula'. Otherwise, remove ALL mathematical content completely." },
+                    new OpenAIMessage { role = "user", content = prompt }
+                },
+                temperature = 0.3f
+            };
+
+            string jsonData = JsonUtility.ToJson(requestData);
+            Debug.Log("Sending to GPT: " + jsonData);
+            byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
+            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+            request.downloadHandler = new DownloadHandlerBuffer();
+            request.SetRequestHeader("Content-Type", "application/json");
+            request.SetRequestHeader("Authorization", $"Bearer {OPENAI_API_KEY}");
+
+            var operation = request.SendWebRequest();
+            await operation;
+
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError($"GPT API Error: {request.error}");
+                return text;
+            }
+
+            var gptResponse = JsonUtility.FromJson<GPTResponse>(request.downloadHandler.text);
+            return gptResponse.choices[0].message.content;
+        }
+    }
 }
