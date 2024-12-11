@@ -30,7 +30,11 @@ Material:
     m_Ints:
     - _Mode: 0
     m_Floats:
+<<<<<<< HEAD
     - _Zoom: 0.41
+=======
+    - _Zoom: 0
+>>>>>>> 964d6ed206eefe9368076e3848612675056d5212
     m_Colors:
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
