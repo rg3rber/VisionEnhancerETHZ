@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: WebcamShaderMat
-  m_Shader: {fileID: 4800000, guid: 721919286b77b074a9aa970275d5b461, type: 3}
+  m_Name: WebcamShader
+  m_Shader: {fileID: 4800000, guid: 271a9caddd66a4b46858013cad2b50bd, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -30,11 +30,7 @@ Material:
     m_Ints:
     - _Mode: 0
     m_Floats:
-<<<<<<< HEAD
-    - _Zoom: 0.41
-=======
     - _Zoom: 0
->>>>>>> 964d6ed206eefe9368076e3848612675056d5212
     m_Colors:
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

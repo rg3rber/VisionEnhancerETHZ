@@ -16,6 +16,9 @@ public class ZoomControl : MonoBehaviour
 
     [SerializeField]
     Material webcamMat;
+
+    // [SerializeField]
+    // Slider zoomSlider;
     // Start is called before the first frame update
 
     float intensity = 0.0f;
@@ -33,6 +36,13 @@ public class ZoomControl : MonoBehaviour
         intensity = Mathf.Clamp(intensity - 0.1f, 0, 1);
         webcamMat.SetFloat("_Zoom", intensity);
     }
+
+    // public void ZoomSet() {
+    //     // Debug.Log(zoomSlider.value);
+    //     // intensity = Mathf.Clamp( - 0.1f, 0, 1);
+    //     // webcamMat.SetFloat("_Zoom", intensity);
+    // }
+
     void Start()
     {
         

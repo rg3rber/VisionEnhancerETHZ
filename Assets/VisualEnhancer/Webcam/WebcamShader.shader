@@ -55,6 +55,9 @@ Shader "Unlit/WebcamShader"
             }
 
             float4 daltonize(fixed4 input, int mode) {
+                if (mode == 0) {
+                    return input;
+                }
                 // RGB to LMS matrix conversion
                 float3 L = (17.8824f * input.r) + (43.5161f * input.g) + (4.11935f * input.b);
                 float3 M = (3.45565f * input.r) + (27.1554f * input.g) + (3.86714f * input.b);
@@ -109,11 +112,11 @@ Shader "Unlit/WebcamShader"
             {
                 // sample the texture
                 float4 zoom_col = tex2D(_MainTex, i.uv * float2(1.0 - _Zoom, 1.0 - _Zoom) + _Offset + _Zoom * float2(0.5, 0.5));
-                float4 col = tex2D(_MainTex, i.uv);
+                // float4 col = tex2D(_MainTex, i.uv);
 
-                float4 corr = daltonize(col, _Mode);
-
-                return _Mode == 0 ? zoom_col : corr;
+                float4 corr = daltonize(zoom_col, _Mode);
+                return corr;
+                // return _Mode == 0 ? zoom_col : corr;
             }
             ENDCG
         }

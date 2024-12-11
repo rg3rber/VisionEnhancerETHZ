@@ -13,8 +13,6 @@ public class ColorBlindnessScript : MonoBehaviour
     [SerializeField]
     GameObject webcamGO;
 
-    //[SerializeField]
-    //TMP_Text menu_header, inc_text, dec_text;
 
     [SerializeField]
     Material webcamMat;
@@ -29,15 +27,6 @@ public class ColorBlindnessScript : MonoBehaviour
     }
 
     public void ColorBtnTap(int btn){
-        //webcamGO.SetActive(true);
-
-        nGo.SetActive(false);
-        prGO.SetActive(false);
-        dtGo.SetActive(false);
-        trGo.SetActive(false);
-
-        //menu_header.text = headers[btn];
-
         webcamMat.SetInteger("_Mode", btn);
     }
     // Start is called before the first frame update
