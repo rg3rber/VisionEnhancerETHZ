@@ -8,7 +8,7 @@ using System;
 public class ColorBlindnessScript : MonoBehaviour
 {
     [SerializeField]
-    GameObject headerGo, nGo, prGO, dtGo, trGo;
+    GameObject nGo, prGO, dtGo, trGo;
 
     [SerializeField]
     GameObject webcamGO;
@@ -28,16 +28,5 @@ public class ColorBlindnessScript : MonoBehaviour
 
     public void ColorBtnTap(int btn){
         webcamMat.SetInteger("_Mode", btn);
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
