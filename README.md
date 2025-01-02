@@ -5,9 +5,9 @@
 
 Vision Enhancer is a comprehensive Mixed Reality application for the Microsoft HoloLens 2 designed to support individuals with color blindness or visual impairments. Leveraging the power of Mixed Reality and Machine Learning, Vision Enhancer aims to break down visual barriers and empower users with tools that improve accessibility in education and beyond.
 
-![architecture](https://github.com/user-attachments/assets/781d395e-0ca7-4a18-953b-347e10fc28e5)
-
 ## Features
+
+![architecture](https://github.com/user-attachments/assets/781d395e-0ca7-4a18-953b-347e10fc28e5)
 
 1. Colorblindness Filters
         Customizable filters for Protanopia, Deuteranopia, and Tritanopia.
@@ -19,8 +19,6 @@ Vision Enhancer is a comprehensive Mixed Reality application for the Microsoft H
 3. Text-to-Speech Vision API
         Employs cutting-edge vision model APIs to recognize and read out text.
         Assists users with low vision or reading challenges by combining Mixed Reality and AI-powered accessibility.
-
-## Pipeline
 
 ![pipeline-img](https://github.com/user-attachments/assets/77a91553-e1cb-4af4-86bd-5dbf3dd10e8f)
 
