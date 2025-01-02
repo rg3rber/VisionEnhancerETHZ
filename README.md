@@ -45,5 +45,7 @@ Assists users with low vision or reading challenges by combining Mixed Reality a
 
              git clone https://github.com/rg3rber/VisionEnhancerETHZ.git
 
-3. Open the project in Unity 2022.3 LTS
-4. Deploy the application to your Microsoft HoloLens 2 device.
+  2. Use Microsofts Mixedrealityfeaturetool to add all dependencies to develop MRTK in Unity
+  3. Open the project in Unity
+  4. Verify the main scene has all the scripts and prefabs added and resolve all compilation errors
+  5. Deploy the application to your Microsoft HoloLens 2 device
