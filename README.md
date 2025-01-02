@@ -20,7 +20,8 @@ Vision Enhancer is a comprehensive Mixed Reality application for the Microsoft H
 
 ## Pipeline
 
-![pipeline](https://github.com/user-attachments/assets/39538c0f-70ae-4ddc-864d-727f80f4de2b)
+![ve-pipeline](https://github.com/user-attachments/assets/2b18b0a0-c169-44c5-b28c-7a03427e9bd1)
+
 
 ## Results
   ### Effectiveness:
