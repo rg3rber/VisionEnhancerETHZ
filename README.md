@@ -9,16 +9,17 @@ Vision Enhancer is a comprehensive Mixed Reality application for the Microsoft H
 
 ![architecture](https://github.com/user-attachments/assets/781d395e-0ca7-4a18-953b-347e10fc28e5)
 
-1. Colorblindness Filters
-        Customizable filters for Protanopia, Deuteranopia, and Tritanopia.
-        Enables users to better distinguish colors and identify details, such as numbers in Ishihara test samples, that were previously indiscernible.
-2. Magnification Tool
-        Magnify hard-to-see areas in real-time using the HoloLens 2 webcam.
-        Ideal for reading distant text, such as a blackboard or presentation slides.
+### 1. Colorblindness Filters
+Customizable filters for Protanopia, Deuteranopia, and Tritanopia.
+Enables users to better distinguish colors and identify details, such as numbers in Ishihara test samples, that were previously indiscernible.
 
-3. Text-to-Speech Vision API
-        Employs cutting-edge vision model APIs to recognize and read out text.
-        Assists users with low vision or reading challenges by combining Mixed Reality and AI-powered accessibility.
+### 2. Magnification Tool
+Magnify hard-to-see areas in real-time using the HoloLens 2 webcam.
+For reading distant text, such as a blackboard or presentation slides.
+
+### 3. Text-to-Speech Vision API
+Employs cutting-edge vision model APIs to recognize and read out text.
+Assists users with low vision or reading challenges by combining Mixed Reality and AI-powered accessibility.
 
 ![pipeline-img](https://github.com/user-attachments/assets/77a91553-e1cb-4af4-86bd-5dbf3dd10e8f)
 
