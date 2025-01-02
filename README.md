@@ -7,7 +7,8 @@ Vision Enhancer is a comprehensive Mixed Reality application for the Microsoft H
 
 ## Features
 
-![architecture](https://github.com/user-attachments/assets/781d395e-0ca7-4a18-953b-347e10fc28e5)
+<img src="https://github.com/user-attachments/assets/781d395e-0ca7-4a18-953b-347e10fc28e5" alt="drawing" width="200"/>
+
 
 ### 1. Colorblindness Filters
 Customizable filters for Protanopia, Deuteranopia, and Tritanopia.
