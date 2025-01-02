@@ -1,4 +1,5 @@
-﻿# VisionEnhancerETHZ
+﻿![WhatsApp Image 2024-12-15 at 15 01 01](https://github.com/user-attachments/assets/8383eed3-5c07-4a9a-915a-91b9ecd68e80)
+
 
 ## Overview
 
