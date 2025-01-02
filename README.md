@@ -11,7 +11,7 @@ Vision Enhancer is a comprehensive Mixed Reality application for the Microsoft H
 
 ### 1. Colorblindness Filters
 Customizable filters for Protanopia, Deuteranopia, and Tritanopia.
-Enables users to better distinguish colors and identify details, such as numbers in Ishihara test samples, that were previously indiscernible.
+Enables users to better distinguish colors and identify details, such as numbers in Ishihara test samples, that were previously not visible.
 
 ### 2. Magnification Tool
 Magnify hard-to-see areas in real-time using the HoloLens 2 webcam.
