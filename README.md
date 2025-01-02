@@ -34,7 +34,7 @@ Assists users with low vision or reading challenges by combining Mixed Reality a
 
   - Unity 2022.3.47f1 LTS
   - For the OCR feature a valid Google vision API key is needed as well as an OpenAI API key
-  - Flask needs to be installed and the script server.py running on your computer in the same network
+  - Flask needs to be installed and the script app.py running on your computer in the same network with the valid keys inserted
   - the IP adress of the Flask Backend has to be known in order to set it once the app is running
     
 
