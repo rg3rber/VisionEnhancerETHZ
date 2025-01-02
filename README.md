@@ -1,5 +1,5 @@
-﻿
-![VisionEnhancerLogo](https://github.com/user-attachments/assets/e9f2794b-4a25-49da-9954-c97b25faf5b6)
+
+![VisionEnhancerLogo-crop](https://github.com/user-attachments/assets/ccc5f696-1225-4f1a-aacc-eefa075d4b2f)
 
 ## Overview
 
