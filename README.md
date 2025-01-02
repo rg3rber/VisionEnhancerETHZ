@@ -28,7 +28,8 @@ Vision Enhancer is a comprehensive Mixed Reality application for the Microsoft H
   ## How to Get Started
 
   1. Clone the repository:
-                 git clone https://github.com/yourusername/visionenhancer.git
 
-2. Open the project in Unity.
-3. Deploy the application to your Microsoft HoloLens 2 device.
+             git clone https://github.com/yourusername/visionenhancer.git
+
+3. Open the project in Unity.
+4. Deploy the application to your Microsoft HoloLens 2 device.
