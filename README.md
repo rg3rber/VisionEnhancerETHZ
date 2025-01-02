@@ -3,7 +3,9 @@
 
 ## Overview
 
-Vision Enhancer is a comprehensive Mixed Reality application for the Microsoft HoloLens 2 designed to support individuals with color vision deficiency (CVD) and visual impairments. Leveraging the power of Mixed Reality and Machine Learning, Vision Enhancer aims to break down visual barriers and empower users with tools that improve accessibility in education and beyond.
+Vision Enhancer is a comprehensive Mixed Reality application for the Microsoft HoloLens 2 designed to support individuals with color blindness or visual impairments. Leveraging the power of Mixed Reality and Machine Learning, Vision Enhancer aims to break down visual barriers and empower users with tools that improve accessibility in education and beyond.
+
+![architecture](https://github.com/user-attachments/assets/781d395e-0ca7-4a18-953b-347e10fc28e5)
 
 ## Features
 
@@ -33,9 +35,17 @@ Vision Enhancer is a comprehensive Mixed Reality application for the Microsoft H
 
   ## How to Get Started
 
+  ### Prerequisits
+
+  - Unity 2022.3.47f1 LTS
+  - For the OCR feature a valid Google vision API key is needed as well as an OpenAI API key
+  - Flask needs to be installed and the script server.py running on your computer in the same network
+  - the IP adress of the Flask Backend has to be known in order to set it once the app is running
+    
+
   1. Clone the repository:
 
              git clone https://github.com/yourusername/visionenhancer.git
 
-3. Open the project in Unity.
+3. Open the project in Unity 2022.3 LTS
 4. Deploy the application to your Microsoft HoloLens 2 device.
