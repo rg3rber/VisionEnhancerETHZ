@@ -30,7 +30,7 @@ Assists users with low vision or reading challenges by combining Mixed Reality a
 
   ## How to Get Started
 
-  ### Prerequisits
+  ### Prerequisites
 
   - Unity 2022.3.47f1 LTS
   - For the OCR feature a valid Google vision API key is needed as well as an OpenAI API key
