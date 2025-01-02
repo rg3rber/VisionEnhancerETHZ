@@ -43,7 +43,7 @@ Assists users with low vision or reading challenges by combining Mixed Reality a
 
   1. Clone the repository:
 
-             git clone https://github.com/yourusername/visionenhancer.git
+             git clone https://github.com/rg3rber/VisionEnhancerETHZ.git
 
 3. Open the project in Unity 2022.3 LTS
 4. Deploy the application to your Microsoft HoloLens 2 device.
