@@ -24,13 +24,9 @@ Assists users with low vision or reading challenges by combining Mixed Reality a
 ![pipeline-img](https://github.com/user-attachments/assets/77a91553-e1cb-4af4-86bd-5dbf3dd10e8f)
 
 
-## Results
-  ### Effectiveness:
-  User tests showed that individuals with colorblindness could identify Ishihara test numbers accurately using the filters.
-  ### Magnification Impact:
-  Users reported improved clarity when using the magnification feature for distant objects.
- ###Text-to-Speech Success:
-  Seamlessly combines low-vision assistance with machine learning, proving the potential of Mixed Reality for accessibility.
+## Demo Video
+
+
 
   ## How to Get Started
 
