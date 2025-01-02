@@ -18,6 +18,10 @@ Vision Enhancer is a comprehensive Mixed Reality application for the Microsoft H
         Employs cutting-edge vision model APIs to recognize and read out text.
         Assists users with low vision or reading challenges by combining Mixed Reality and AI-powered accessibility.
 
+## Pipeline
+
+![pipeline](https://github.com/user-attachments/assets/39538c0f-70ae-4ddc-864d-727f80f4de2b)
+
 ## Results
   ### Effectiveness:
   User tests showed that individuals with colorblindness could identify Ishihara test numbers accurately using the filters.
