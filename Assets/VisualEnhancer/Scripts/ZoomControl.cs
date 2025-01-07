@@ -29,11 +29,13 @@ public class ZoomControl : MonoBehaviour
 
     public void ZoomIncrease(){
         intensity = Mathf.Clamp(intensity + 0.1f, 0, 1); 
+        Debug.Log(intensity);
         webcamMat.SetFloat("_Zoom", intensity);
     }
 
     public void ZoomDecrease(){
         intensity = Mathf.Clamp(intensity - 0.1f, 0, 1);
+        Debug.Log(intensity);
         webcamMat.SetFloat("_Zoom", intensity);
     }
 
