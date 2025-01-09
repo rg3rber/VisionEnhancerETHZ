@@ -1,4 +1,0 @@
-repository "VisionEnhancer@MixedRealityETHZ@cloud"
-  path "/"
-    br "/main"
-    co "/main"
